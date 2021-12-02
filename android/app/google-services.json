@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "7660443793",
+    "project_id": "schoenen-d5203",
+    "storage_bucket": "schoenen-d5203.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7660443793:android:36bace4d6a258f466b8730",
+        "android_client_info": {
+          "package_name": "com.example.schoenen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7660443793-mjicqncn05aus6ce5c1smgmroit4fth7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIZF5dDTaWAp-B8s3YEIAOP-yLwFfFU18"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "7660443793-mjicqncn05aus6ce5c1smgmroit4fth7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
