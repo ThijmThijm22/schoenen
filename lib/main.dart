@@ -1,5 +1,5 @@
 // <uses-permission android:name="android.permission.INTERNET"/>
-// flutter build apk --build-name=1.0.3 --build-number=3
+// flutter build apk --build-name=1.0.1 --build-number=2
 
 import 'package:flutter/material.dart';
 
@@ -7,16 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:schoenen/pages/login.dart';
 import 'package:schoenen/pages/home.dart';
 import 'package:schoenen/pages/newshoe.dart';
+import 'package:schoenen/pages/shoedetails.dart';
 
 // Google Fonts
 import 'package:google_fonts/google_fonts.dart';
 
 // Firebase
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Provider
 import 'package:provider/provider.dart';
 import 'package:schoenen/providers/themeprov.dart';
+import 'package:schoenen/providers/fireprov.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding();
@@ -24,9 +27,20 @@ Future<void> main() async {
 
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProv(),
-      child: const MyApp(),
+    MultiProvider(
+      providers: [ 
+        ChangeNotifierProvider(
+        create: (context) => ThemeProv(),
+      ),
+        ChangeNotifierProvider(
+        create: (context) => FireProv(),
+      ),
+        StreamProvider <List>(
+          create: (context) => FireProv().getCollections,
+          initialData:  [],
+        ),
+      ],
+      child: const MyApp()
     )
   );
 }
@@ -40,7 +54,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        textTheme: GoogleFonts.manropeTextTheme(),
+        textTheme: GoogleFonts.robotoTextTheme(),
       ),
 
       debugShowCheckedModeBanner: false,

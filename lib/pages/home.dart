@@ -16,6 +16,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // Provider
 import 'package:provider/provider.dart';
 import 'package:schoenen/providers/themeprov.dart';
+import 'package:schoenen/providers/fireprov.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -25,34 +26,48 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Widget> shoeWidgets = [];
-  getData() {
-    var inst = FirebaseFirestore.instance;
-    var userId = FirebaseAuth.instance.currentUser;
+  // getData() {
+  //   var inst = FirebaseFirestore.instance;
+  //   var userId = FirebaseAuth.instance.currentUser;
 
-    inst.collection(userId!.uid).get().then((res) {
-      res.docs.forEach((element) {
-        print(element.data()['afstand']);
-        shoeWidgets.add(ShoeCard(
-            naam: element.data()['naam'],
-            afstand: double.parse(element.data()['afstand'])));
-      });
-      setState(() {
-        print("setting state");
-      });
-    });
-  }
+  //   inst.collection(userId!.uid).get().then((res) {
+  //     res.docs.forEach((element) {
+  //       print(element.data()['afstand']);
+  //       shoeWidgets.add(ShoeCard(
+  //           key: UniqueKey(),
+  //           naam: element.data()['naam'],
+  //           afstand: double.parse(element.data()['afstand'])));
+  //     });
+  //     setState(() {
+  //       print("setting state");
+  //     });
+  //   });
+  // }
 
   var now = DateFormat('EEEE, d/M/y').format(DateTime.now());
+  var nowA = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-    getData();
+    // getData();
+    setState(() {});
   }
 
   Widget build(BuildContext context) {
+    List<Widget> shoeWidgets = [];
     var themeProv = Provider.of<ThemeProv>(context, listen: true);
+    var fireProv = Provider.of<FireProv>(context, listen: true);
+    var fireStream = Provider.of<List>(context, listen: true);
+
+    fireStream.forEach((e) {
+      shoeWidgets.add(ShoeCard(
+          key: UniqueKey(),
+          afstand: double.parse(e.data()['afstand']),
+          naam: e.data()['naam'],
+          laatstBewerkt: e.data()['laatst_bewerkt'].toString(),
+          ));
+    });
 
     return Scaffold(
       backgroundColor: themeProv.backgroundColor,
@@ -136,7 +151,7 @@ class _HomeState extends State<Home> {
         icon: const Icon(Icons.add),
         label: const Text(
           'Nieuwe Schoen',
-          ),
+        ),
         backgroundColor: themeProv.btnColor,
       ),
     );

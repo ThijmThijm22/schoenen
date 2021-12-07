@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 // Firebase
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,9 +21,9 @@ class _NewShoeState extends State<NewShoe> {
 
   Widget build(BuildContext context) {
     var themeProv = Provider.of<ThemeProv>(context, listen: true);
+    var nowA = DateTime.now();
 
     return Scaffold(
-      
       backgroundColor: themeProv.backgroundColor,
       resizeToAvoidBottomInset: false,
       body: SizedBox.expand(
@@ -51,21 +50,22 @@ class _NewShoeState extends State<NewShoe> {
                         height: 50,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(themeProv.btnColor),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                themeProv.btnColor),
                           ),
                           onPressed: () {
                             var inst = FirebaseFirestore.instance;
                             var userId = FirebaseAuth.instance.currentUser;
                             if (naamController.text != "" &&
                                 afstandController.text != "") {
-                              var collectie = inst.collection(userId!.uid);
                               inst
-                                  .collection(userId.uid)
-                                  .add({
+                                  .collection(userId!.uid)
+                                  .doc(naamController.text)
+                                  .set({
                                     "naam": naamController.text,
                                     "afstand": afstandController.text,
-                                    }
-                                  )
+                                    "laatst_bewerkt": nowA,
+                                  })
                                   .catchError((err) => print(err))
                                   .then((value) =>
                                       Navigator.pushNamedAndRemoveUntil(
